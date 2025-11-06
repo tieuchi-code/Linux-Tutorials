@@ -16,7 +16,7 @@ Ta thấy BeagleBone đã cung cấp driver để điều khiển led cho user
 ```
 beaglebone:green:usr2  beaglebone:green:usr3
 ```
-![alt text](d41cc161011f8d41d40e.jpg)
+![](img/4_Application_GPIO-${curr4ntTi47444tpm47p}.png)
 **Driver giúp điều khiển led D2, D3*
 
 Ta truy cập vào led user 2
