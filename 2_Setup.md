@@ -149,7 +149,7 @@ Nhập password
 *Script sẽ giúp thiết lập môi trường (minicom, telnet, TFTP, NFS...)*  
 <!-- © 2025 — Authored by TIEU CHI. -->  
 
-```console
+```
 Are you running this script using sudo? The detected username is 'root'.
 Verify and enter your Linux username below
 [ root ] 
@@ -157,7 +157,7 @@ Verify and enter your Linux username below
 -> enter  
 <!-- © 2025 — Authored by TIEU CHI. -->  
 
-```console
+```
 User 'root' is already apart of the 'dialout' group
 Do you wish to install required host packages (Press (Y) to run, (n) to skip)? 
 ```
@@ -165,7 +165,7 @@ Do you wish to install required host packages (Press (Y) to run, (n) to skip)?
 *Nhận thấy bạn đang dùng quyền root*  
 <!-- © 2025 — Authored by TIEU CHI. -->  
 
-```console
+```
 Do you wish to run nfs setup (Press (Y) to run, (n) to skip) ?
 ```
 ->y -> enter  
@@ -179,7 +179,7 @@ In which directory do you want to install the target filesystem?(if this directo
 <!-- © 2025 — Authored by TIEU CHI. -->  
 
 *Dùng thư mục mặc đinh, hoặc có thể chọn chỗ khác (không khuyến khích)*
-```console
+```
 Note! This command requires you to have administrator priviliges (sudo access) 
 on your host.
 Press return to continue
@@ -187,14 +187,14 @@ Press return to continue
 -> enter
 <!-- © 2025 — Authored by TIEU CHI. -->  
 
-```console
+```
 /home/tieuchi/ti-processor-sdk-linux-am335x-evm-09.03.05.02/targetNFS already exists
 (r) rename existing filesystem (o) overwrite existing filesystem (s) skip filesystem extraction
 [r] 
 ```
 *Thông báo này nghĩa là thư mục đã tồn tại. Nó sẽ không hiện trong lần đầu tiên bạn tạo. Bạn có thể đổi tên, ghi đè hoặc bỏ qua*
 
-```console
+```
 This step will set up the SDK to install binaries in to:
 /home/tieuchi/ti-processor-sdk-linux-am335x-evm-09.03.05.02/targetNFS/home/root/am335x-evm
 
@@ -208,7 +208,7 @@ Press return to continue
 -> enter
 <!-- © 2025 — Authored by TIEU CHI. -->  
 
-```console
+```
 This step will export your target filesystem for NFS access.
 
 Note! This command requires you to have administrator priviliges (sudo access) 
@@ -218,7 +218,7 @@ Press return to continue
 -> enter
 <!-- © 2025 — Authored by TIEU CHI. -->  
 
-```console
+```
 Stopping nfs-kernel-server (via systemctl): nfs-kernel-server.service.
 Starting nfs-kernel-server (via systemctl): nfs-kernel-server.service.
 Do you wish to run tftp setup (Press (Y) to run, (n) to skip) ? 
@@ -226,14 +226,14 @@ Do you wish to run tftp setup (Press (Y) to run, (n) to skip) ?
 -> y -> enter
 <!-- © 2025 — Authored by TIEU CHI. -->  
 
-```console
+```
 Which directory do you want to be your tftp root directory?(if this directory does not exist it will be created for you)
 [ /tftpboot ] 
 ```
 -> enter
 <!-- © 2025 — Authored by TIEU CHI. -->  
 
-```console
+```
 This step will set up the tftp server in the /tftpboot directory.
 
 Note! This command requires you to have administrator priviliges (sudo access) 
@@ -243,7 +243,7 @@ Press return to continue
 -> enter
 <!-- © 2025 — Authored by TIEU CHI. -->  
 
-```console
+```
 This step will set up the tftp server in the /tftpboot directory.
 
 Note! This command requires you to have administrator priviliges (sudo access) 
