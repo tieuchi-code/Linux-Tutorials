@@ -1,3 +1,5 @@
+*Tài liệu được biên soạn bởi **TIEU CHI** — 2025*  
+> © 2025_TIEUCHI  
 # Hướng dẫn viết application điều khiển chân GPIO
 Application là program trên userspace, không được thêm vào kernel (như dạng driver)
 
@@ -341,5 +343,7 @@ int close(int fd);
 ```
 *gpio_line_req.fd*  hay  *gpio_fp* là fd của các file đang mở
 
+
+> © 2025_TIEUCHI  
 
 
