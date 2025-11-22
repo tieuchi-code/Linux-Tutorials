@@ -1,5 +1,6 @@
-In this project, we will control gpio in kernel using driver
-The pin IO we use is gpiochip0, line 28 (P9 - 12)
+# Viết driver điều khiển chân GPIO
+Ở phần trước là viết application để điều khiển led, tuy nhiên là tác động vào driver đã có, ở phần này là viết một driver ở tầng kernel
+**The pin IO we use is gpiochip0, line 28 (P9 - 12)**
 
 ```c
 #include <linux/init.h>
