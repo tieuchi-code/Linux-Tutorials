@@ -1,3 +1,5 @@
+*Tài liệu được biên soạn bởi **TIEU CHI** — 2025*  
+> © 2025_TIEUCHI  
 ### QT creator
 *QTcreator is a framework to make GUI for embeded system, mobile app, desktop app (linux,window,macos)*
 
@@ -17,6 +19,8 @@ qtcreator
 tieuchi@tieuchi:~$ source ti-processor-sdk-linux-am335x-evm-09.03.05.02/linux-devkit/environment-setup
 ```
 ___
+> © 2025_TIEUCHI  
+<!-- © 2025 — Authored by TIEU CHI. -->  
 **If you install QT with command and open source, then you the instruction below**
 In QT
 - tools -> option
@@ -33,6 +37,7 @@ In QT
 	(*this is also auto match, if not, write it yourself)
 - QT version: QT 5.15.7 (system)
 	(*ti-sdk/linux-devkit/sysroots/x86_64-arago-linux/usr/bin/qmake)
+
 ___
 
 **Create project**
@@ -41,17 +46,18 @@ ___
 - qmake
 - build for BBB
 ___
+
 **Test GUI**
-insert label: hello BBB
-insert button
+- insert label: hello BBB
+- insert button
 (*anything you want)
 ___
-
+<!-- © 2025 — Authored by TIEU CHI. -->  
 - build (it may have error, no problem)
 - deploy (the button run)
 *note the size of your screen, in this instruction is 800x600*
 OK now see in your BBB, it may have a program with your project name
-___
+> © 2025_TIEUCHI  
 
 If you do it until now, you may see error relate to library
 ```bash
@@ -73,7 +79,6 @@ sudo apt update
 sudo apt install realvnc-vnc-viewer
 ```
 ___
-
 **On BBB**
 ```bash
 ./<project_name> -platform vnc:size=800x600:port=5900
@@ -87,7 +92,12 @@ VNC: 192.168.8.8:5900
 Youtube instruction:
 https://www.youtube.com/watch?v=4c6MZ34kLhc
 
+> © 2025_TIEUCHI  
 
+<!--
+© 2025 — Authored by TIEU CHI  
+Giữ attribution để tôn trọng quyền tác giả nhé.  
+-->
 
 
 

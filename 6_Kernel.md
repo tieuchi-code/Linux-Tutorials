@@ -348,8 +348,6 @@ Log hiện
 ```
 [ 6379.523209] [HELLO KERNEL DRIVER]: you just write [blabla
 ```
-
-> © 2025_TIEUCHI  
 ___
 > © 2025_TIEUCHI  
 ## Quy trình viết một driver cơ bản
