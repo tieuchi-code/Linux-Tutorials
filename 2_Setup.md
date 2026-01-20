@@ -91,7 +91,17 @@ FTDI serial caple ( USB UART)
 ```bash
 ifconfig
 ```
+Hoặc dùng lệnh ip (cho phiên bản mới của Linux, nên học)
 ```
+ip [OBJECT] [COMMAND] [OPTIONS]
+
+ip a / ip addr          Xem / gán IP
+ip link                 Xem / bật tắt card mạng
+ip route                Routing (gateway)
+ip neigh                ARP table
+ip -s                   Xem thống kê
+```
+```bash
 ifconfig
 enp4s0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
         ether d8:43:ae:09:7c:da  txqueuelen 1000  (Ethernet)
@@ -121,13 +131,18 @@ wlo1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
 
 *Host ethernet là enp4s0, chưa được set IP tĩnh*
 *Có thể tùy ý không cần chính xác*
-```
+```bash
 sudo ifconfig enp4s0 192.168.8.9
+```
+Hoặc
+```bash
+sudo ip addr add 192.168.8.9/24 dev enp4s0
 ```
 *ifconfig để kiểm tra lại*
 ```bash
 ifconfig
 ```
+
 ```
 enp4s0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
         inet 192.168.8.9  netmask 255.255.255.0  broadcast 192.168.8.255
@@ -138,6 +153,7 @@ enp4s0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 ```
 *IP tĩnh cho ethernet đã được set*
+
 <!-- © 2025 — Authored by TIEU CHI. -->  
 
 Chạy file setup.sh  
@@ -296,8 +312,9 @@ that the board is connected to.
 Which serial port do you want to use with minicom?
 [ /dev/ttyS0 ] 
 (**we are using ubuntu, so it's not ttyS0, we use ttyUSB0)
+```
 -> /dev/ttyUSB0
-
+```
 Configuration saved to /root/.minirc.dfl. You can change it further from inside
 minicom, see the Software Development Guide for more information.
 
