@@ -1,14 +1,37 @@
-Devicd tree is hardware map, instruction for kernel to know what value is write to which register, so kernel driver don't have to write many driver for many board
+# Device tree 
 
-IN this instruction, we will find out how to config and build and flash device tree to zImage
+Device tree là hardware map giúp kernel biết cần cấu hình phần cứng như thế nào (ghi giá trị nào vào thanh ghi), device tree còn giúp các driver có thể được sử dụng trên nhiều dòng chip khác nhau (một driver chi cần được enable trong device tree là có thể chạy được trên chip đó)
 
-to find device tree in ti-sdk
+
+Chúng ta sẽ học cách viết một **driver** và enable driver đó trong **device tree**
+
+- file **.dts**: device tree source - đây là file source code mô tả phần cứng cho kernel
+- file **.dtc**: device tree compiler
+- file **.dtb**: device tree blob - đây là file được biên dịch từ .dts
+
+Tìm file **device tree source** trong TI-SDK
 
 -> cd ti-sdk -> boardsupport -> ti-linux-kernel -> arch -> arm -> boot -> dts -> am335x-boneblack.dts
+___
+Đầu tiên sẽ viết code để enable driver trong file .dts
 
-file .dts: device tree source - describe board hardware for linux kernel
-file .dtc: device tree compiler
-file .dtb: device tree blob
+```c
+#include "am33xx.dtsi"
+#include "am335x-bone-common.dtsi"
+#include "am335x-boneblack-common.dtsi"
+#include "am335x-boneblack-hdmi.dtsi"
+
+/ {
+	model = "TI AM335x BeagleBone Black";
+	compatible = "ti,am335x-bone-black", "ti,am335x-bone", "ti,am33xx";
+	hello_led {
+		compatible = "hello-led";
+		gpios = <&gpio1 28 GPIO_ACTIVE_HIGH>;
+	};
+};
+```
+
+Sau đó là viết driver điều khiển chân GPIO
 ```c
 #include <linux/init.h>
 #include <linux/module.h>
@@ -68,17 +91,6 @@ struct gpio_desc *g;
 
 static int __init hello_init(void)
 {
-    // int rets = gpio_request(28, "mygppio");
-    // gpio_direction_output(28,0);
-    // gpio_set_value(GPIO_NUM,0);
-    // if (!rets) {
-    // printk("[HELLO KERNEL DRIVER]: gpio %d requested successfully\n", GPIO_NUM);
-    // }
-    // else if (rets) {
-    //     printk("*[HELLO KERNEL DRIVER]: can not request gpio1 - 28 ");
-    //     return -1;
-    // }
-
     struct device_node *np = of_find_node_by_path(HELLO_LED_DTB_PATH);
     if (!np) {
         printk("[HELLO KERNEL DRIVER]: Not found %s \n",HELLO_LED_DTB_PATH);
@@ -134,38 +146,11 @@ MODULE_DESCRIPTION("Hello kernel demo");
 module_init(hello_init);
 module_exit(hello_exit);
 ```
-```c
-#include "am33xx.dtsi"
-#include "am335x-bone-common.dtsi"
-#include "am335x-boneblack-common.dtsi"
-#include "am335x-boneblack-hdmi.dtsi"
-
-/ {
-	model = "TI AM335x BeagleBone Black";
-	compatible = "ti,am335x-bone-black", "ti,am335x-bone", "ti,am33xx";
-	hello_led {
-		compatible = "hello-led";
-		gpios = <&gpio1 28 GPIO_ACTIVE_HIGH>;
-	};
-};
+**make linux-dtbs** để build device tree
+Sau đó copy file **am335x-boneblack.dtb** vào **tftpboot**
+___
+Sửa file **setupBoard.minicom** để boot đúng file **.dtb** lên board
 ```
-
-
-cd ti-sdk -> makerules -> Makefile_linux-dtbs
-
--> cd ti-sdk 
-make linux-dtbs
-
-this action will build all  device tree, we will choose one of them and import to board
-
-make linux-dtbs_stage
-the built device tree will be in /arch/arm/boot/dts/ and copied to /board-support/built-images/dtb/ti
-
-
-cd bin -> setupBoard.minicom
-```
-end setenv rootpath '/home/tieuchi/ti-processor-sdk-linux-am335x-evm-09.03.05.02/targetNFS'
-
 expect {
     "=>"
 }
@@ -175,39 +160,37 @@ expect {
     "=>"
 }
 send "setenv fdtfile am335x-boneblack.dtb"
+```
+___
 
-expect {
-    "=>"
-}
-send "setenv bootargs 'console=ttyO0,115200n8 root=/dev/nfs nfsroot=192.168.8.9:/home/tieuchi/ti-processor-sdk-linux-am335x-evm-09.03.05.02/targetNFS,nolock,v3,tcp,rsize=4096,wsize=4096 rw ip=192.168.8.8:192.168.8.9:192.168.8.1:255.255.255.0::eth0'"
+## Module platform driver
+
+Chúng ta đã học viết **driver module** và insmod trên board. Nhưng sẽ phải insmod lại tất cả driver mỗi lần khởi động
+Chúng ta sẽ học **build-in driver** mà mình viết vào trong **kernel** luôn, khởi động lại là module có sẵn
+
+Tìm source của **driver** trong **ti-sdk**
+
+ti-sdk -> board-support -> ti-linux -> drivers
+
+Trong **drivers** 
+Tạo thư mục **mydriver** 
+Trong **mydriver**, tạo **mydriver.c** và **Makefile**
+Copy file **mydriver.c** đã viết vào **mydriver.c**
+Thêm vào **Makefile** trong **mydriver**
+```makefile
+obj-y += mydriver.o
 ```
 
-copy am335x-boneblack.dtb in boardsupport/dtb -> tftp server
-cp board-support/built-images/dtb/ti/am335x-boneblack.dtb /tftpboot/
+Trong **Makefile** của thư mục **drivers**, thêm vào cuối:
+```makefile
+obj-y += mydriver/
+```
+Build lại kernel & device tree, copy vào tftpboot rồi boot lên board
 
---------------------------------------------------
-
-You have already known how to build kernel and your customized device tree, and insert your driver module, but you will have to insert your driver module everytime  you reboot, now we will learn to insert your driver module into kernel, so your driver will be boot with kernel
-
-cd ti-sdk -> board-support -> ti-linux -> drivers
-In "driver" -> create directory "hello-driver" 
-->Copy and paste file "hello-kernel.c" to "hello-driver" 
-In "driver" directory -> Makefile 
-	add: 
-		obj-y += hello-driver/
-	at the end of Makefile
-In "hello-driver" create Makefile
-in Makefile -> obj-y += hello-kernel.o
-
-make linux 
--> make linux_stage
-(*this will copy zImage to /built-image/)
--> copy zImage to /tftpboot/
-boot your board again
-**But this may not work, because your device tree and kernel don't boot at the same time, so node may no find the gpio
+Nhưng cách này có thể không được, bởi vì device tree và driver không được boot lên cùng lúc nên boot driver trước thì không có device tree để nhận cmpatible
 
 
-//this file will be build-in to kernel, use module platform driver
+**This file will be build-in to kernel, use module platform driver**
 ```c
 #include <linux/init.h>
 #include <linux/module.h>
@@ -331,12 +314,8 @@ static struct platform_driver hello_led_driver = {
         .name = "hello-kernel",
         .of_match_table = hello_led_of_driver,
     },
-
 };
-
 module_platform_driver(hello_led_driver);
-// module_init(hello_init);
-// module_exit(hello_exit);
 ```
 --------------------------------------------------
 
@@ -484,12 +463,7 @@ static struct platform_driver hello_led_driver = {
 };
 
 module_platform_driver(hello_led_driver);
-// module_init(hello_init);
-// module_exit(hello_exit);
 ```
-
-
-
 
 
 
